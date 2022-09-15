@@ -1,12 +1,12 @@
 ### Scripts
 
-#### `npm run start:dev`
+#### `npm run dev`
 
-Starts the application in development using `nodemon` and `ts-node` to do hot reloading.
+Starts the application in development environment.
 
 #### `npm run start`
 
-Starts the app in production by first building the project with `npm run build`, and then executing the compiled JavaScript at `build/index.js`.
+Starts building the project with `npm run build`, and then executing the compiled JavaScript at `build/index.js`.
 
 #### `npm run build`
 
