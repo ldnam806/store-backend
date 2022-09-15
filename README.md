@@ -19,3 +19,11 @@ Runs the `jasmine` tests once.
 #### `npm run prettier-format`
 
 Format your code.
+
+#### `npm run lint`
+
+Lint your code.
+
+#### `End point example`
+
+http://localhost:8000/api/product
