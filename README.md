@@ -14,16 +14,8 @@ Builds the app at `build`, cleaning the folder first.
 
 #### `npm run test`
 
-Runs the `jest` tests once.
-
-#### `npm run test:dev`
-
-Run the `jest` tests in watch mode, waiting for file changes.
+Runs the `jasmine` tests once.
 
 #### `npm run prettier-format`
 
 Format your code.
-
-#### `npm run prettier-watch`
-
-Format your code in watch mode, waiting for file changes.
