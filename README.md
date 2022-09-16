@@ -12,7 +12,7 @@ Starts building the project with `npm run build`, and then executing the compile
 
 Builds the app at `build`, cleaning the folder first.
 
-#### `npm run test`
+#### `npm run test-code`
 
 Runs the `jasmine` tests once.
 
@@ -23,6 +23,10 @@ Format your code.
 #### `npm run lint`
 
 Lint your code.
+
+#### `npm run test`
+
+Testing model with migrate.
 
 #### `End point example`
 
