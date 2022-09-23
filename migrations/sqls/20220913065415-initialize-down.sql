@@ -1,4 +1,5 @@
-DROP TABLE orders;
-DROP TABLE product;
-DROP TABLE product_quantity;
-DROP TABLE user;
+
+DROP TABLE IF EXISTS product_quantity;
+DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS "order";
+DROP TABLE if exists "user" cascade;

@@ -1,5 +1,5 @@
 {
-  "name": "Storefront Backend",
+  "name": "storefront-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,11 +13,11 @@
     "prettier-format": "prettier --config .prettierrc \"./src/**/*.ts\" --write",
     "jasmine": "jasmine",
     "test-code": "npm run build && npm run jasmine",
-    "test": "cross-env ENV=test && npx tsc && db-migrate --env test up && jasmine && db-migrate db:drop test"
+    "test": "npx tsc && db-migrate up --config database.json -e test && jasmine && db-migrate down -e test"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run test && npm run prettier-format && npm run lint"
+      "pre-commit": "npm run test-code && npm run prettier-format && npm run lint"
     }
   },
   "devDependencies": {

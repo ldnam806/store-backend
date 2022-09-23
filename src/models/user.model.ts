@@ -91,6 +91,28 @@ class UserModel {
       );
     }
   }
+
+  async authenticate(email: string, password: string): Promise<User | null> {
+    try {
+      const connection = await db.connect();
+      const sql = 'SELECT "password" FROM "user" WHERE email=$1';
+      const result = await connection.query(sql, [email]);
+      if (result.rows.length) {
+        const isPasswordValid = result.rows[0].password === password;
+        if (isPasswordValid) {
+          const userInfo = await connection.query(
+            'SELECT email, "firstName", "lastName" FROM "user" WHERE email=($1)',
+            [email]
+          );
+          return userInfo.rows[0];
+        }
+      }
+      connection.release();
+      return null;
+    } catch (error) {
+      throw new Error(`Unable to login: ${(error as Error).message}`);
+    }
+  }
 }
 
 export default UserModel;

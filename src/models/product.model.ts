@@ -21,12 +21,12 @@ class ProductModel {
   async getAll(): Promise<Product[]> {
     try {
       const connection = await db.connect();
-      const sql = 'SELECT * from product';
+      const sql = 'SELECT * FROM product';
       const result = await connection.query(sql);
       connection.release();
       return result.rows;
     } catch (error) {
-      throw new Error(`Error at retrieving users ${(error as Error).message}`);
+      throw new Error(`Error at retrieving ${(error as Error).message}`);
     }
   }
   // get specific student
@@ -52,7 +52,6 @@ class ProductModel {
                     SET name=$1, price=$2, 
                     WHERE id=$3
                     RETURNING id, name, price`;
-
       const result = await connection.query(sql, [u.name, u.price, u.id]);
       connection.release();
       return result.rows[0];

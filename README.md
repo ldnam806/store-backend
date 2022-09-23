@@ -31,3 +31,5 @@ Testing model with migrate.
 #### `End point example`
 
 http://localhost:8000/api/product
+
+db-migrate up initialize

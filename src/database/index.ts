@@ -1,14 +1,21 @@
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
-
 dotenv.config();
 
+const {
+  POSTGRES_HOST,
+  POSTGRES_PORT,
+  POSTGRES_DB,
+  POSTGRES_USER,
+  POSTGRES_PASSWORD
+} = process.env;
+
 const pool = new Pool({
-  user: String(process.env.POSTGRES_USER),
-  host: String(process.env.POSTGRES_HOST),
-  database: String(process.env.POSTGRES_DB_NAME),
-  password: String(process.env.POSTGRES_PWD),
-  port: Number(process.env.POSTGRES_PORT)
+  user: String(POSTGRES_USER),
+  host: String(POSTGRES_HOST),
+  database: String(POSTGRES_DB),
+  password: String(POSTGRES_PASSWORD),
+  port: Number(POSTGRES_PORT)
 });
 
 pool.on('error', (error: Error) => {

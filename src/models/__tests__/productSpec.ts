@@ -22,10 +22,3 @@ describe('Test Product Model Methods', () => {
     expect(productModel.delete).toBeDefined();
   });
 });
-
-describe('Test Product Model Logic', () => {
-  it('Get all method should return All available product in DB', async () => {
-    const products = await productModel.getAll();
-    expect(products.length).toBe(0);
-  });
-});

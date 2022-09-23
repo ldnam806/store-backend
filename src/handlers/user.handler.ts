@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import UserModel from '../models/user.model';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const userModel = new UserModel();
 
@@ -82,5 +86,32 @@ export const deleteById = async (
     });
   } catch (err) {
     next(err);
+  }
+};
+export const authenticate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email, password } = req.body;
+    const user = await userModel.authenticate(email, password);
+    const token = jwt.sign(
+      { user },
+      process.env.TOKEN_SECRET_KEY as unknown as string
+    );
+    if (!user) {
+      return res.status(401).json({
+        status: 'error',
+        message: 'the email and password do not match please try again'
+      });
+    }
+    return res.json({
+      status: 'success',
+      data: { ...user, token },
+      message: 'user authenticated successfully'
+    });
+  } catch (err) {
+    return next(err);
   }
 };

@@ -34,13 +34,14 @@ class ProductModel {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const connection = yield database_1.default.connect();
-                const sql = 'SELECT * from product';
+                const sql = 'SELECT * FROM product';
                 const result = yield connection.query(sql);
                 connection.release();
                 return result.rows;
             }
             catch (error) {
-                throw new Error(`Error at retrieving users ${error.message}`);
+                console.log(error);
+                throw new Error(`Error at retrieving ${error.message}`);
             }
         });
     }
