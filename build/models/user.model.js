@@ -101,5 +101,26 @@ class UserModel {
             }
         });
     }
+    authenticate(email, password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const connection = yield database_1.default.connect();
+                const sql = 'SELECT "password" FROM "user" WHERE email=$1';
+                const result = yield connection.query(sql, [email]);
+                if (result.rows.length) {
+                    const isPasswordValid = result.rows[0].password === password;
+                    if (isPasswordValid) {
+                        const userInfo = yield connection.query('SELECT email, "firstName", "lastName" FROM "user" WHERE email=($1)', [email]);
+                        return userInfo.rows[0];
+                    }
+                }
+                connection.release();
+                return null;
+            }
+            catch (error) {
+                throw new Error(`Unable to login: ${error.message}`);
+            }
+        });
+    }
 }
 exports.default = UserModel;

@@ -40,7 +40,6 @@ class ProductModel {
                 return result.rows;
             }
             catch (error) {
-                console.log(error);
                 throw new Error(`Error at retrieving ${error.message}`);
             }
         });

@@ -98,7 +98,10 @@ export const authenticate = async (
     const user = await userModel.authenticate(email, password);
     const token = jwt.sign(
       { user },
-      process.env.TOKEN_SECRET_KEY as unknown as string
+      process.env.TOKEN_SECRET_KEY as unknown as string,
+      {
+        expiresIn: '60s'
+      }
     );
     if (!user) {
       return res.status(401).json({

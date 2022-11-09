@@ -12,8 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteById = exports.updateById = exports.getById = exports.getAll = exports.create = void 0;
+exports.authenticate = exports.deleteById = exports.updateById = exports.getById = exports.getAll = exports.create = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const userModel = new user_model_1.default();
 const create = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -86,3 +89,27 @@ const deleteById = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.deleteById = deleteById;
+const authenticate = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, password } = req.body;
+        const user = yield userModel.authenticate(email, password);
+        const token = jsonwebtoken_1.default.sign({ user }, process.env.TOKEN_SECRET_KEY, {
+            expiresIn: '60s'
+        });
+        if (!user) {
+            return res.status(401).json({
+                status: 'error',
+                message: 'the email and password do not match please try again'
+            });
+        }
+        return res.json({
+            status: 'success',
+            data: Object.assign(Object.assign({}, user), { token }),
+            message: 'user authenticated successfully'
+        });
+    }
+    catch (err) {
+        return next(err);
+    }
+});
+exports.authenticate = authenticate;
