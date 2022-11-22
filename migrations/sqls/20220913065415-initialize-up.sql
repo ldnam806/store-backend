@@ -2,9 +2,9 @@
 
 CREATE TABLE IF NOT EXISTS "user"(
     id SERIAL PRIMARY KEY,
+    email varchar(150),
     "firstName" varchar(150),
     "lastName" varchar(150),
-    email varchar(150),
     password varchar(150)
 );
 
@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS "order"(
     userId SERIAL
    
 );
-
 
 
 CREATE TABLE IF NOT EXISTS product_quantity(

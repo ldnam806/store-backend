@@ -1,12 +1,8 @@
 import { Router } from 'express';
-import * as handlers from '../../handlers/product.handler';
-
+import {Create, Show, Index} from '../../handlers/product.handler';
+import validateToken from '../../middleware/validateToken';
 const productModel = Router();
-// api/product
-productModel.route('/').post(handlers.create);
-productModel.route('/').get(handlers.getAll);
-productModel.route('/:id').get(handlers.getById);
-productModel.route('/:id').patch(handlers.updateById);
-productModel.route('/:id').delete(handlers.deleteById);
-
+productModel.route('/').post(validateToken, Create);
+productModel.route('/').get(Index);
+productModel.route('/:id').get(Show);
 export default productModel;

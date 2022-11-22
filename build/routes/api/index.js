@@ -9,7 +9,7 @@ const product_route_1 = __importDefault(require("./product.route"));
 const user_route_1 = __importDefault(require("./user.route"));
 const order_route_1 = __importDefault(require("./order.route"));
 const apiRoute = (0, express_1.Router)();
-apiRoute.use('/product', validateToken_1.default, product_route_1.default);
+apiRoute.use('/product', product_route_1.default);
 apiRoute.use('/user', user_route_1.default);
 apiRoute.use('/order', validateToken_1.default, order_route_1.default);
 exports.default = apiRoute;

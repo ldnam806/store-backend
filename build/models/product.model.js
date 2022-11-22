@@ -14,84 +14,48 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = __importDefault(require("../database"));
 class ProductModel {
-    create(u) {
+    Create(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const connection = yield database_1.default.connect();
-                const sql = `INSERT INTO product (name, price) 
+                const query = `INSERT INTO product (name, price) 
                     values ($1, $2) 
-                    RETURNING name, price`;
-                const result = yield connection.query(sql, [u.name, u.price]);
+                    RETURNING id, name, price`;
+                const result = yield connection.query(query, [data.name, data.price]);
                 connection.release();
                 return result.rows[0];
             }
             catch (error) {
-                throw new Error(`Unable to create (${u.name}): ${error.message}`);
+                return error;
             }
         });
     }
-    getAll() {
+    Show() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const connection = yield database_1.default.connect();
-                const sql = 'SELECT * FROM product';
-                const result = yield connection.query(sql);
+                const query = 'SELECT * FROM product';
+                const result = yield connection.query(query);
                 connection.release();
                 return result.rows;
             }
             catch (error) {
-                throw new Error(`Error at retrieving ${error.message}`);
+                return error;
             }
         });
     }
-    // get specific student
-    getById(id) {
+    Index(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sql = `SELECT * FROM product 
+                const query = `SELECT * FROM product 
         WHERE id=($1)`;
                 const connection = yield database_1.default.connect();
-                const result = yield connection.query(sql, [id]);
+                const result = yield connection.query(query, [id]);
                 connection.release();
                 return result.rows[0];
             }
             catch (error) {
-                throw new Error(`Could not find product ${id}, ${error.message}`);
-            }
-        });
-    }
-    // update student
-    updateById(u) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const connection = yield database_1.default.connect();
-                const sql = `UPDATE product 
-                    SET name=$1, price=$2, 
-                    WHERE id=$3
-                    RETURNING id, name, price`;
-                const result = yield connection.query(sql, [u.name, u.price, u.id]);
-                connection.release();
-                return result.rows[0];
-            }
-            catch (error) {
-                throw new Error(`Could not update product: ${u.name}, ${error.message}`);
-            }
-        });
-    }
-    // delete student
-    delete(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const connection = yield database_1.default.connect();
-                const sql = `DELETE FROM product 
-                    WHERE id=($1) 
-                    RETURNING id, name`;
-                const result = yield connection.query(sql, [id]);
-                connection.release();
-                return result.rows[0];
-            }
-            catch (error) {
-                throw new Error(`Could not delete user ${id}, ${error.message}`);
+                return error;
             }
         });
     }

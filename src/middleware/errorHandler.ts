@@ -8,7 +8,7 @@ const errorHandler = (
   next: NextFunction
 ) => {
   const status = error.status || 500;
-  const message = error.message || 'Whoops!! something went wrong';
+  const message = error.message || 'something went wrong';
   res.status(status).json({ status, message });
 };
 

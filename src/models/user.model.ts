@@ -1,107 +1,62 @@
 import User from '../types/user.type';
 import db from '../database';
-
 class UserModel {
-  async create(u: User): Promise<User> {
+  async Create(data: User): Promise<User> {
     try {
       const connection = await db.connect();
-      const sql = `INSERT INTO public.user (firstName, lastName , password) 
-                    values ($1, $2, $3) 
-                    RETURNING firstName, lastName, password`;
-      const result = await connection.query(sql, [
-        u.firstName,
-        u.lastName,
-        u.password
+      const query = `INSERT INTO "user" (email, "firstName", "lastName" , password) 
+                    values ($1, $2, $3, $4) 
+                    RETURNING id, email, "firstName", "lastName"`;
+      const result = await connection.query(query, [
+        data.email,
+        data.firstName,
+        data.lastName,
+        data.password
       ]);
       connection.release();
       return result.rows[0];
     } catch (error) {
-      throw new Error(
-        `Unable to create (${u.firstName} - ${u.lastName}): ${
-          (error as Error).message
-        }`
-      );
+      throw new Error((error as Error).message);
     }
   }
 
-  async getAll(): Promise<User[]> {
+  async Index(): Promise<User[]> {
     try {
       const connection = await db.connect();
-      const sql = 'SELECT * from public.user';
-      const result = await connection.query(sql);
+      const query = 'SELECT * from "user"';
+      const result = await connection.query(query);
       connection.release();
       return result.rows;
     } catch (error) {
-      throw new Error(`Error at retrieving users ${(error as Error).message}`);
+      throw new Error((error as Error).message);
     }
   }
 
-  async getById(id: string): Promise<User> {
+  async Show(id: string): Promise<User> {
     try {
-      const sql = `SELECT * FROM public.user 
+      const query = `SELECT * FROM "user" 
         WHERE id=($1)`;
       const connection = await db.connect();
-      const result = await connection.query(sql, [id]);
+      const result = await connection.query(query, [id]);
       connection.release();
       return result.rows[0];
     } catch (error) {
-      throw new Error(
-        `Could not find product ${id}, ${(error as Error).message}`
-      );
+      throw new Error((error as Error).message);
     }
   }
 
-  async updateById(u: User): Promise<User> {
+  async Auth(email: string, password: string): Promise<User | null> {
     try {
       const connection = await db.connect();
-      const sql = `UPDATE public.user 
-                    SET firstName=$1, lastName=$2, password=$3, 
-                    WHERE id=$4
-                    RETURNING id, firstName, lastName`;
-
-      const result = await connection.query(sql, [
-        u.firstName,
-        u.lastName,
-        u.password,
-        u.id
-      ]);
-      connection.release();
-      return result.rows[0];
-    } catch (error) {
-      throw new Error(
-        `Could not update product: ${u.firstName} - ${u.lastName}, ${
-          (error as Error).message
-        }`
+      const result = await connection.query(
+        'SELECT "password" FROM "user" WHERE email=$1',
+        [email]
       );
-    }
-  }
-
-  async delete(id: string): Promise<User> {
-    try {
-      const connection = await db.connect();
-      const sql = `DELETE FROM public.user 
-                    WHERE id=($1) 
-                    RETURNING id, name`;
-      const result = await connection.query(sql, [id]);
-      connection.release();
-      return result.rows[0];
-    } catch (error) {
-      throw new Error(
-        `Could not delete user ${id}, ${(error as Error).message}`
-      );
-    }
-  }
-
-  async authenticate(email: string, password: string): Promise<User | null> {
-    try {
-      const connection = await db.connect();
-      const sql = 'SELECT "password" FROM "public.user" WHERE email=$1';
-      const result = await connection.query(sql, [email]);
       if (result.rows.length) {
         const isPasswordValid = result.rows[0].password === password;
         if (isPasswordValid) {
           const userInfo = await connection.query(
-            'SELECT email, "firstName", "lastName" FROM "public.user" WHERE email=($1)',
+            'SELECT id, email, "firstName", "lastName" FROM "user" WHERE email=($1)',
             [email]
           );
           return userInfo.rows[0];
@@ -110,7 +65,7 @@ class UserModel {
       connection.release();
       return null;
     } catch (error) {
-      throw new Error(`Unable to login: ${(error as Error).message}`);
+      throw new Error((error as Error).message);
     }
   }
 }

@@ -1,88 +1,55 @@
 import { Request, Response, NextFunction } from 'express';
 import ProductModel from '../models/product.model';
 
-const productModel = new ProductModel();
-
-export const create = async (
+const Create  = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  const productModel = new ProductModel();
+  const {name, price} = req.body
   try {
-    const product = await productModel.create(req.body);
-    res.json({
-      status: 'success',
-      data: { ...product },
-      message: 'Product created successfully'
+    const result = await productModel.Create({name,price});
+    res.status(200).json({
+      data: { ...result }
     });
   } catch (err) {
     next(err);
   }
 };
 
-export const getAll = async (_: Request, res: Response, next: NextFunction) => {
+const Index = async (_req: Request, res: Response, next: NextFunction) => {
+  const productModel = new ProductModel();
   try {
-    const products = await productModel.getAll();
-    res.json({
-      status: 'success',
-      data: products,
-      message: 'Successfully'
+    const result = await productModel.Show();
+    res.status(200).json({
+      data: result,
     });
   } catch (err) {
     next(err);
   }
 };
 
-export const getById = async (
+const Show = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  const productModel = new ProductModel();
   try {
     const { id } = req.params;
-    const product = await productModel.getById(id as string);
-    res.json({
-      status: 'success',
-      data: product,
-      message: 'Successfully'
+    const result = await productModel.Index(id);
+    res.status(200).json({
+      data: result,
     });
   } catch (err) {
     next(err);
   }
 };
 
-export const updateById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const product = await productModel.updateById(req.body);
-    res.json({
-      status: 'success',
-      data: product,
-      message: 'Successfully'
-    });
-  } catch (err) {
-    next(err);
-  }
-};
 
-export const deleteById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const product = await productModel.delete(
-      req.params.id as unknown as string
-    );
-    res.json({
-      status: 'success',
-      data: product,
-      message: 'Successfully'
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+export {
+  Create,
+  Show,
+  Index
+}

@@ -1,36 +1,14 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const handlers = __importStar(require("../../handlers/user.handler"));
+const user_handler_1 = require("../../handlers/user.handler");
+const validateToken_1 = __importDefault(require("../../middleware/validateToken"));
 const userRoutes = (0, express_1.Router)();
-// api/user
-userRoutes.route('/').post(handlers.create);
-userRoutes.route('/').get(handlers.getAll);
-userRoutes.route('/:id').get(handlers.getById);
-userRoutes.route('/:id').patch(handlers.updateById);
-userRoutes.route('/:id').delete(handlers.deleteById);
-userRoutes.route('/auth').post(handlers.authenticate);
+userRoutes.route('/').post(user_handler_1.Create);
+userRoutes.route('/').get(validateToken_1.default, user_handler_1.Index);
+userRoutes.route('/:id').get(validateToken_1.default, user_handler_1.Show);
+userRoutes.route('/login').post(user_handler_1.Auth);
 exports.default = userRoutes;

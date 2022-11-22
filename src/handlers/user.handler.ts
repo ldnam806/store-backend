@@ -5,116 +5,72 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const userModel = new UserModel();
-
-export const create = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const Create = async (req: Request, res: Response, next: NextFunction) => {
+  const userModel = new UserModel();
   try {
-    const user = await userModel.create(req.body);
-    res.json({
-      status: 'success',
-      data: { ...user },
-      message: 'Product created successfully'
+    const { email, firstName, lastName, password } = req.body;
+    const result = await userModel.Create({
+      email,
+      firstName,
+      lastName,
+      password
+    });
+    res.status(200).json({
+      data: result
     });
   } catch (err) {
     next(err);
   }
 };
 
-export const getAll = async (_: Request, res: Response, next: NextFunction) => {
+const Index = async (_: Request, res: Response, next: NextFunction) => {
+  const userModel = new UserModel();
   try {
-    const users = await userModel.getAll();
-    res.json({
-      status: 'success',
-      data: users,
-      message: 'Successfully'
+    const result = await userModel.Index();
+    res.status(200).json({
+      data: result
     });
   } catch (err) {
     next(err);
   }
 };
 
-export const getById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const Show = async (req: Request, res: Response, next: NextFunction) => {
+  const userModel = new UserModel();
   try {
     const { id } = req.params;
-    const user = await userModel.getById(id as string);
-    res.json({
-      status: 'success',
-      data: user,
-      message: 'Successfully'
+    const result = await userModel.Show(id);
+    res.status(200).json({
+      data: result
     });
   } catch (err) {
     next(err);
   }
 };
 
-export const updateById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const user = await userModel.updateById(req.body);
-    res.json({
-      status: 'success',
-      data: user,
-      message: 'Successfully'
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const deleteById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const user = await userModel.delete(req.params.id as unknown as string);
-    res.json({
-      status: 'success',
-      data: user,
-      message: 'Successfully'
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-export const authenticate = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const Auth = async (req: Request, res: Response, next: NextFunction) => {
+  const userModel = new UserModel();
   try {
     const { email, password } = req.body;
-    const user = await userModel.authenticate(email, password);
-    const token = jwt.sign(
-      { user },
-      process.env.TOKEN_SECRET_KEY as unknown as string,
-      {
-        expiresIn: '60s'
-      }
-    );
-    if (!user) {
+    const isCorrectInfo = await userModel.Auth(email, password);
+    if (!isCorrectInfo) {
       return res.status(401).json({
-        status: 'error',
-        message: 'the email and password do not match please try again'
+        message: 'Your email or password incorrect.'
       });
     }
-    return res.json({
-      status: 'success',
-      data: { ...user, token },
-      message: 'user authenticated successfully'
+    const token = jwt.sign(
+      { isCorrectInfo },
+      process.env.TOKEN_SECRET_KEY as unknown as string,
+      {
+        expiresIn: '3600s'
+      }
+    );
+    return res.status(200).json({
+      data: { ...isCorrectInfo, token }
     });
   } catch (err) {
     return next(err);
   }
 };
+
+export { Create, Show, Index, Auth };

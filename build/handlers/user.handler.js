@@ -12,104 +12,71 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authenticate = exports.deleteById = exports.updateById = exports.getById = exports.getAll = exports.create = void 0;
+exports.Auth = exports.Index = exports.Show = exports.Create = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const userModel = new user_model_1.default();
-const create = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const Create = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const userModel = new user_model_1.default();
     try {
-        const user = yield userModel.create(req.body);
-        res.json({
-            status: 'success',
-            data: Object.assign({}, user),
-            message: 'Product created successfully'
+        const { email, firstName, lastName, password } = req.body;
+        const result = yield userModel.Create({ email, firstName, lastName, password });
+        res.status(200).json({
+            data: result,
         });
     }
     catch (err) {
         next(err);
     }
 });
-exports.create = create;
-const getAll = (_, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.Create = Create;
+const Index = (_, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const userModel = new user_model_1.default();
     try {
-        const users = yield userModel.getAll();
-        res.json({
-            status: 'success',
-            data: users,
-            message: 'Successfully'
+        const result = yield userModel.Index();
+        res.status(200).json({
+            data: result,
         });
     }
     catch (err) {
         next(err);
     }
 });
-exports.getAll = getAll;
-const getById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.Index = Index;
+const Show = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const userModel = new user_model_1.default();
     try {
         const { id } = req.params;
-        const user = yield userModel.getById(id);
-        res.json({
-            status: 'success',
-            data: user,
-            message: 'Successfully'
+        const result = yield userModel.Show(id);
+        res.status(200).json({
+            data: result,
         });
     }
     catch (err) {
         next(err);
     }
 });
-exports.getById = getById;
-const updateById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const user = yield userModel.updateById(req.body);
-        res.json({
-            status: 'success',
-            data: user,
-            message: 'Successfully'
-        });
-    }
-    catch (err) {
-        next(err);
-    }
-});
-exports.updateById = updateById;
-const deleteById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const user = yield userModel.delete(req.params.id);
-        res.json({
-            status: 'success',
-            data: user,
-            message: 'Successfully'
-        });
-    }
-    catch (err) {
-        next(err);
-    }
-});
-exports.deleteById = deleteById;
-const authenticate = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.Show = Show;
+const Auth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const userModel = new user_model_1.default();
     try {
         const { email, password } = req.body;
-        const user = yield userModel.authenticate(email, password);
-        const token = jsonwebtoken_1.default.sign({ user }, process.env.TOKEN_SECRET_KEY, {
-            expiresIn: '60s'
-        });
-        if (!user) {
+        const isCorrectInfo = yield userModel.Auth(email, password);
+        if (!isCorrectInfo) {
             return res.status(401).json({
-                status: 'error',
-                message: 'the email and password do not match please try again'
+                message: 'Your email or password incorrect.'
             });
         }
-        return res.json({
-            status: 'success',
-            data: Object.assign(Object.assign({}, user), { token }),
-            message: 'user authenticated successfully'
+        const token = jsonwebtoken_1.default.sign({ isCorrectInfo }, process.env.TOKEN_SECRET_KEY, {
+            expiresIn: '3600s'
+        });
+        return res.status(200).json({
+            data: Object.assign(Object.assign({}, isCorrectInfo), { token }),
         });
     }
     catch (err) {
         return next(err);
     }
 });
-exports.authenticate = authenticate;
+exports.Auth = Auth;

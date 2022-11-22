@@ -1,13 +1,9 @@
 import { Router } from 'express';
-import * as handlers from '../../handlers/user.handler';
-
+import {Create, Show, Index, Auth} from '../../handlers/user.handler';
+import validateToken from '../../middleware/validateToken'
 const userRoutes = Router();
-// api/user
-userRoutes.route('/').post(handlers.create);
-userRoutes.route('/').get(handlers.getAll);
-userRoutes.route('/:id').get(handlers.getById);
-userRoutes.route('/:id').patch(handlers.updateById);
-userRoutes.route('/:id').delete(handlers.deleteById);
-userRoutes.route('/auth').post(handlers.authenticate);
-
+userRoutes.route('/').post(Create);
+userRoutes.route('/').get(validateToken ,Index);
+userRoutes.route('/:id').get(validateToken,Show);
+userRoutes.route('/login').post(Auth);
 export default userRoutes;
