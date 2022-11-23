@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import apiRoute from './routes/api';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import errorHandler from './middleware/errorHandler';
+import errorTracker from './middleware/errorTracker';
 
 const corsOptions = { credentials: true, origin: true };
 dotenv.config();
@@ -12,7 +12,7 @@ const port = process.env.PORT;
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
-app.use(errorHandler);
+app.use(errorTracker);
 app.use('/api', apiRoute);
 
 const server = app.listen(port, (): void => {

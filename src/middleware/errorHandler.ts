@@ -1,15 +1,17 @@
 import { Response, Request, NextFunction } from 'express';
 
-const errorHandler = (
-  error: { status: number; message: string },
+type ErrorMiddleware = { status: number; message: string };
+
+const errorTracker = (
+  error: ErrorMiddleware,
   req: Request,
   res: Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction
 ) => {
-  const status = error.status || 500;
-  const message = error.message || 'something went wrong';
-  res.status(status).json({ status, message });
+  res
+    .status(error.status ? error.status : 500)
+    .json({ message: error.message });
 };
 
-export default errorHandler;
+export default errorTracker;
