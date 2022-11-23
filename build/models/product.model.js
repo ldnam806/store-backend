@@ -26,7 +26,7 @@ class ProductModel {
                 return result.rows[0];
             }
             catch (error) {
-                return error;
+                throw new Error(error.message);
             }
         });
     }
@@ -40,7 +40,7 @@ class ProductModel {
                 return result.rows;
             }
             catch (error) {
-                return error;
+                throw new Error(error.message);
             }
         });
     }
@@ -55,7 +55,7 @@ class ProductModel {
                 return result.rows[0];
             }
             catch (error) {
-                return error;
+                throw new Error(error.message);
             }
         });
     }

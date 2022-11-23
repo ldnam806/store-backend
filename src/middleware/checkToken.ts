@@ -10,13 +10,13 @@ type Error = {
   stack?: string;
 };
 
-const handleUnauthorizedError = (next: NextFunction) => {
-  const error: Error = new Error('Login Error, Please login again');
+const handleUnauthorized = (next: NextFunction) => {
+  const error: Error = new Error('Please login again');
   error.status = 401;
   next(error);
 };
 
-const validateToken = (req: Request, _res: Response, next: NextFunction) => {
+const checkToken = (req: Request, _res: Response, next: NextFunction) => {
   try {
     const authHeader = req.get('Authorization');
     if (authHeader) {
@@ -25,24 +25,24 @@ const validateToken = (req: Request, _res: Response, next: NextFunction) => {
       if (token && bearer === 'bearer') {
         const decode = jwt.verify(
           token,
-          process.env.TOKEN_SECRET_KEY as unknown as string
+          process.env.TOKEN_SECRET_KEY as string
         );
         if (decode) {
           next();
         } else {
-          handleUnauthorizedError(next);
+          handleUnauthorized(next);
         }
       } else {
         // token type not bearer
-        handleUnauthorizedError(next);
+        handleUnauthorized(next);
       }
     } else {
       // No Token Provided.
-      handleUnauthorizedError(next);
+      handleUnauthorized(next);
     }
   } catch (err) {
-    handleUnauthorizedError(next);
+    handleUnauthorized(next);
   }
 };
 
-export default validateToken;
+export default checkToken;

@@ -21,9 +21,14 @@ const Create = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
     const userModel = new user_model_1.default();
     try {
         const { email, firstName, lastName, password } = req.body;
-        const result = yield userModel.Create({ email, firstName, lastName, password });
+        const result = yield userModel.Create({
+            email,
+            firstName,
+            lastName,
+            password
+        });
         res.status(200).json({
-            data: result,
+            data: result
         });
     }
     catch (err) {
@@ -36,7 +41,7 @@ const Index = (_, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield userModel.Index();
         res.status(200).json({
-            data: result,
+            data: result
         });
     }
     catch (err) {
@@ -50,7 +55,7 @@ const Show = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
         const { id } = req.params;
         const result = yield userModel.Show(id);
         res.status(200).json({
-            data: result,
+            data: result
         });
     }
     catch (err) {
@@ -72,7 +77,7 @@ const Auth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
             expiresIn: '3600s'
         });
         return res.status(200).json({
-            data: Object.assign(Object.assign({}, isCorrectInfo), { token }),
+            data: Object.assign(Object.assign({}, isCorrectInfo), { token })
         });
     }
     catch (err) {

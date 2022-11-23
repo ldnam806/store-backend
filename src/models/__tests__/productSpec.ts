@@ -1,24 +1,16 @@
 import ProductModel from '../product.model';
-const productModel = new ProductModel();
-
 describe('Test Product Model Methods', () => {
+  const productModel = new ProductModel();
   it('Get all method exist', () => {
-    expect(productModel.getAll).toBeDefined();
+    expect(productModel.Index).toBeDefined();
   });
 
   it('Get by ID method exist', () => {
-    expect(productModel.getById).toBeDefined();
+    expect(productModel.Show).toBeDefined();
   });
 
   it('Create method exist', () => {
-    expect(productModel.create).toBeDefined();
+    expect(productModel.Create).toBeDefined();
   });
 
-  it('Update by ID method exist', () => {
-    expect(productModel.updateById).toBeDefined();
-  });
-
-  it('Delete method exist', () => {
-    expect(productModel.delete).toBeDefined();
-  });
 });

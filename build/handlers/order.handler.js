@@ -12,77 +12,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteById = exports.updateById = exports.getById = exports.getAll = exports.create = void 0;
+exports.Index = exports.Show = exports.Create = void 0;
 const order_model_1 = __importDefault(require("../models/order.model"));
-const orderModel = new order_model_1.default();
-const create = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const Create = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const orderModel = new order_model_1.default();
     try {
-        const order = yield orderModel.create(req.body);
-        res.json({
-            status: 'success',
-            data: Object.assign({}, order),
-            message: 'Product created successfully'
+        const result = yield orderModel.Create(req.body);
+        res.status(200).json({
+            data: result
         });
     }
     catch (err) {
         next(err);
     }
 });
-exports.create = create;
-const getAll = (_, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.Create = Create;
+const Index = (_, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const orderModel = new order_model_1.default();
     try {
-        const orders = yield orderModel.getAll();
-        res.json({
-            status: 'success',
-            data: orders,
-            message: 'Successfully'
+        const result = yield orderModel.Index();
+        res.status(200).json({
+            data: result
         });
     }
     catch (err) {
         next(err);
     }
 });
-exports.getAll = getAll;
-const getById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.Index = Index;
+const Show = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const orderModel = new order_model_1.default();
     try {
         const { id } = req.params;
-        const order = yield orderModel.getById(id);
-        res.json({
-            status: 'success',
-            data: order,
-            message: 'Successfully'
+        const result = yield orderModel.Show(id);
+        res.status(200).json({
+            data: result
         });
     }
     catch (err) {
         next(err);
     }
 });
-exports.getById = getById;
-const updateById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const order = yield orderModel.updateById(req.body);
-        res.json({
-            status: 'success',
-            data: order,
-            message: 'Successfully'
-        });
-    }
-    catch (err) {
-        next(err);
-    }
-});
-exports.updateById = updateById;
-const deleteById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const order = yield orderModel.delete(req.params.id);
-        res.json({
-            status: 'success',
-            data: order,
-            message: 'Successfully'
-        });
-    }
-    catch (err) {
-        next(err);
-    }
-});
-exports.deleteById = deleteById;
+exports.Show = Show;

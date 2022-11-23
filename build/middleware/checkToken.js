@@ -6,12 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const handleUnauthorizedError = (next) => {
-    const error = new Error('Login Error, Please login again');
+const handleUnauthorized = (next) => {
+    const error = new Error('Please login again');
     error.status = 401;
     next(error);
 };
-const validateToken = (req, _res, next) => {
+const checkToken = (req, _res, next) => {
     try {
         const authHeader = req.get('Authorization');
         if (authHeader) {
@@ -23,21 +23,21 @@ const validateToken = (req, _res, next) => {
                     next();
                 }
                 else {
-                    handleUnauthorizedError(next);
+                    handleUnauthorized(next);
                 }
             }
             else {
                 // token type not bearer
-                handleUnauthorizedError(next);
+                handleUnauthorized(next);
             }
         }
         else {
             // No Token Provided.
-            handleUnauthorizedError(next);
+            handleUnauthorized(next);
         }
     }
     catch (err) {
-        handleUnauthorizedError(next);
+        handleUnauthorized(next);
     }
 };
-exports.default = validateToken;
+exports.default = checkToken;

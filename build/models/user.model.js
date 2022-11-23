@@ -18,9 +18,9 @@ class UserModel {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const connection = yield database_1.default.connect();
-                const query = `INSERT INTO "user" (email, firstName, lastName , password) 
+                const query = `INSERT INTO "user" (email, "firstName", "lastName" , password) 
                     values ($1, $2, $3, $4) 
-                    RETURNING id, email, firstName, lastName`;
+                    RETURNING id, email, "firstName", "lastName"`;
                 const result = yield connection.query(query, [
                     data.email,
                     data.firstName,
@@ -31,7 +31,7 @@ class UserModel {
                 return result.rows[0];
             }
             catch (error) {
-                throw new Error(`Unable to create : ${error.message}`);
+                throw new Error(error.message);
             }
         });
     }
@@ -39,28 +39,28 @@ class UserModel {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const connection = yield database_1.default.connect();
-                const sql = 'SELECT * from "user"';
-                const result = yield connection.query(sql);
+                const query = 'SELECT * from "user"';
+                const result = yield connection.query(query);
                 connection.release();
                 return result.rows;
             }
             catch (error) {
-                return error;
+                throw new Error(error.message);
             }
         });
     }
     Show(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sql = `SELECT * FROM "user" 
+                const query = `SELECT * FROM "user" 
         WHERE id=($1)`;
                 const connection = yield database_1.default.connect();
-                const result = yield connection.query(sql, [id]);
+                const result = yield connection.query(query, [id]);
                 connection.release();
                 return result.rows[0];
             }
             catch (error) {
-                return error;
+                throw new Error(error.message);
             }
         });
     }
@@ -80,7 +80,7 @@ class UserModel {
                 return null;
             }
             catch (error) {
-                return error;
+                throw new Error(error.message);
             }
         });
     }

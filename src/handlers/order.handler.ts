@@ -1,86 +1,49 @@
 import { Request, Response, NextFunction } from 'express';
 import OrderModel from '../models/order.model';
 
-const orderModel = new OrderModel();
-
-export const create = async (
+const Create = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  const orderModel = new OrderModel();
   try {
-    const order = await orderModel.create(req.body);
-    res.json({
-      status: 'success',
-      data: { ...order },
-      message: 'Product created successfully'
+    const result = await orderModel.Create(req.body);
+    res.status(200).json({
+      data: result
     });
   } catch (err) {
     next(err);
   }
 };
 
-export const getAll = async (_: Request, res: Response, next: NextFunction) => {
+ const Index = async (_: Request, res: Response, next: NextFunction) => {
+  const orderModel = new OrderModel();
   try {
-    const orders = await orderModel.getAll();
-    res.json({
-      status: 'success',
-      data: orders,
-      message: 'Successfully'
+    const result = await orderModel.Index();
+    res.status(200).json({
+      data: result
     });
   } catch (err) {
     next(err);
   }
 };
 
-export const getById = async (
+ const Show = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  const orderModel = new OrderModel();
   try {
     const { id } = req.params;
-    const order = await orderModel.getById(id as string);
-    res.json({
-      status: 'success',
-      data: order,
-      message: 'Successfully'
+    const result = await orderModel.Show(id);
+    res.status(200).json({
+      data: result
     });
   } catch (err) {
     next(err);
   }
 };
 
-export const updateById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const order = await orderModel.updateById(req.body);
-    res.json({
-      status: 'success',
-      data: order,
-      message: 'Successfully'
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const deleteById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const order = await orderModel.delete(req.params.id as unknown as string);
-    res.json({
-      status: 'success',
-      data: order,
-      message: 'Successfully'
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+export { Create, Show, Index };

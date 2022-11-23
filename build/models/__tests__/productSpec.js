@@ -4,21 +4,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const product_model_1 = __importDefault(require("../product.model"));
-const productModel = new product_model_1.default();
 describe('Test Product Model Methods', () => {
+    const productModel = new product_model_1.default();
     it('Get all method exist', () => {
-        expect(productModel.getAll).toBeDefined();
+        expect(productModel.Index).toBeDefined();
     });
     it('Get by ID method exist', () => {
-        expect(productModel.getById).toBeDefined();
+        expect(productModel.Show).toBeDefined();
     });
     it('Create method exist', () => {
-        expect(productModel.create).toBeDefined();
-    });
-    it('Update by ID method exist', () => {
-        expect(productModel.updateById).toBeDefined();
-    });
-    it('Delete method exist', () => {
-        expect(productModel.delete).toBeDefined();
+        expect(productModel.Create).toBeDefined();
     });
 });

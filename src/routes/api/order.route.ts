@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import * as handlers from '../../handlers/order.handler';
+import {Create, Show, Index} from '../../handlers/order.handler';
+import checkToken from '../../middleware/checkToken';
 
 const orderRoutes = Router();
 // api/order
-orderRoutes.route('/').post(handlers.create);
-orderRoutes.route('/').get(handlers.getAll);
-orderRoutes.route('/:id').get(handlers.getById);
-orderRoutes.route('/:id').patch(handlers.updateById);
-orderRoutes.route('/:id').delete(handlers.deleteById);
+orderRoutes.route('/').post(checkToken,Create);
+orderRoutes.route('/').get(checkToken,Index);
+orderRoutes.route('/:id').get(checkToken,Show);
+
 
 export default orderRoutes;
