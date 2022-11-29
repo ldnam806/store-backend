@@ -1,16 +1,38 @@
 {
   "dev": {
     "driver": "pg",
-    "user": "postgres",
-    "password": "nam205806",
-    "host": "localhost",
-    "database": "devDB5"
+    "user": {
+      "ENV": "PG_USER"
+    },
+    "host": {
+      "ENV": "PG_HOST"
+    },
+    "database": {
+      "ENV": "PG_DEV_DB"
+    },
+    "password": {
+      "ENV": "PG_PASSWORD"
+    },
+    "port": {
+      "ENV": "PG_PORT"
+    }
   },
   "test": {
     "driver": "pg",
-    "user": "postgres",
-    "password": "nam205806",
-    "host": "localhost",
-    "database": "testDB"
+    "user": {
+      "ENV": "PG_USER"
+    },
+    "host": {
+      "ENV": "PG_HOST"
+    },
+    "database": {
+      "ENV": "PG_TEST_DB"
+    },
+    "password": {
+      "ENV": "PG_PASSWORD"
+    },
+    "port": {
+      "ENV": "PG_PORT"
+    }
   }
 }

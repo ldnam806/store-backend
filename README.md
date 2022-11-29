@@ -1,35 +1,25 @@
-### Scripts
+## Setup connect to database and run project on local
 
-#### `npm run dev`
+Step 1
+### Create database 
+`CREATE DATABASE devDB;`  for local development
+`CREATE DATABASE testDB;` for test command
 
-Starts the application in development environment.
+Step 2
+### Install package and build project
+Run command  `npm i` and `npm run build` 
 
-#### `npm run start`
+Step 3
+### After build done run migration for databases
+Run command `npm run migration:run` with .ENV file config
 
-Starts building the project with `npm run build`, and then executing the compiled JavaScript at `build/index.js`.
+Step 4
+### Run project
+Run command `npm run start` or `npm run dev` running project on local
+### Test code with jasmine package
+Test source code 
+with command `npm run test-code` or `npm run test` for testing database
+### Format
+`npm run lint`
+`npm run prettier-format`
 
-#### `npm run build`
-
-Builds the app at `build`, cleaning the folder first.
-
-#### `npm run test-code`
-
-Runs the `jasmine` tests once.
-
-#### `npm run prettier-format`
-
-Format your code.
-
-#### `npm run lint`
-
-Lint your code.
-
-#### `npm run test`
-
-Testing model with migrate.
-
-#### `End point example`
-
-http://localhost:8000/api/product
-
-db-migrate up initialize

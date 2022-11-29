@@ -3,23 +3,31 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const {
-  POSTGRES_HOST,
-  POSTGRES_PORT,
-  POSTGRES_DB,
-  POSTGRES_USER,
-  POSTGRES_PASSWORD
+  PG_HOST,
+  PG_DEV_DB,
+  PG_USER,
+  PG_PASSWORD,
+  PG_TEST_DB,
+  PG_PORT,
+  ENV,
 } = process.env;
 
-const pool = new Pool({
-  user: String(POSTGRES_USER),
-  host: String(POSTGRES_HOST),
-  database: String(POSTGRES_DB),
-  password: String(POSTGRES_PASSWORD),
-  port: Number(POSTGRES_PORT)
+let db = new Pool({
+  user: PG_USER,
+  host: PG_HOST,
+  database: PG_DEV_DB,
+  password: PG_PASSWORD,
+  port: Number(PG_PORT),
 });
 
-pool.on('error', (error: Error) => {
-  console.error(`Error: ${error.message}`);
-});
+if (ENV === 'test') {
+  db = new Pool({
+    user: PG_USER,
+    host: PG_HOST,
+    database: PG_TEST_DB,
+    password: PG_PASSWORD,
+    port: Number(PG_PORT),
+  });
+}
 
-export default pool;
+export default db;

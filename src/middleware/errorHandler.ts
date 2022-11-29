@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from 'express';
 
 type ErrorMiddleware = { status: number; message: string };
 
-const errorTracker = (
+const catchErrorMiddleware = (
   error: ErrorMiddleware,
   req: Request,
   res: Response,
@@ -14,4 +14,4 @@ const errorTracker = (
     .json({ message: error.message });
 };
 
-export default errorTracker;
+export default catchErrorMiddleware;

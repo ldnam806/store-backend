@@ -7,13 +7,13 @@
     "start": "npm run build && node build/index.js",
     "dev": "nodemon",
     "build": "rimraf ./build && tsc",
-    "migration:run": "db-migrate up",
     "migration:down": "db-migrate down",
+    "migration:run": "db-migrate --env test up && db-migrate up",
     "lint": "eslint . --ext .ts",
     "prettier-format": "prettier --config .prettierrc \"./src/**/*.ts\" --write",
     "jasmine": "jasmine",
     "test-code": "npm run build && npm run jasmine",
-    "test": "npx tsc && db-migrate up --config database.json -e test && jasmine && db-migrate down -e test"
+    "test": "set ENV=test && db-migrate --env test up && jasmine"
   },
   "husky": {
     "hooks": {
