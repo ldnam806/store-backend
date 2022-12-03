@@ -17,7 +17,7 @@ class ProductModel {
     }
   }
 
-  async Show(): Promise<Product[]> {
+  async Index (): Promise<Product[]> {
     try {
       const connection = await db.connect();
       const query = 'SELECT * FROM product';
@@ -29,7 +29,7 @@ class ProductModel {
     }
   }
 
-  async Index(id: string): Promise<Product> {
+  async  Show(id: string): Promise<Product> {
     try {
       const query = `SELECT * FROM product 
         WHERE id=($1)`;

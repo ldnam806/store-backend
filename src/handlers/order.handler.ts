@@ -46,4 +46,20 @@ const Create = async (
   }
 };
 
-export { Create, Show, Index };
+ const AddProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const orderModel = new OrderModel();
+  try {
+    const result = await orderModel.AddProduct(req.body);
+    res.status(200).json({
+      data: result
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { Create, Show, Index,AddProduct };

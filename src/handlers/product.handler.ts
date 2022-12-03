@@ -21,7 +21,7 @@ const Create  = async (
 const Index = async (_req: Request, res: Response, next: NextFunction) => {
   const productModel = new ProductModel();
   try {
-    const result = await productModel.Show();
+    const result = await productModel.Index();
     res.status(200).json({
       data: result,
     });
@@ -38,7 +38,7 @@ const Show = async (
   const productModel = new ProductModel();
   try {
     const { id } = req.params;
-    const result = await productModel.Index(id);
+    const result = await productModel.Show(id);
     res.status(200).json({
       data: result,
     });

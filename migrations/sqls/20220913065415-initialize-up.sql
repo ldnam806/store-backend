@@ -1,6 +1,6 @@
 
 
-CREATE TABLE IF NOT EXISTS "user"(
+CREATE TABLE IF NOT EXISTS "users"(
     id SERIAL PRIMARY KEY,
     email varchar(150),
     "firstName" varchar(150),
@@ -9,10 +9,10 @@ CREATE TABLE IF NOT EXISTS "user"(
 );
 
 
-CREATE TABLE IF NOT EXISTS "order"(
+CREATE TABLE IF NOT EXISTS "orders"(
     id SERIAL PRIMARY KEY,
     status varchar(20),
-    userId SERIAL
+    "userId" SERIAL
    
 );
 
@@ -31,20 +31,8 @@ CREATE TABLE IF NOT EXISTS product(
     price float
 );
 
- alter table "order" add foreign key (userId) REFERENCES "user"(id);
- alter table product_quantity add foreign key (orderId) REFERENCES "order"(id);
- alter table product_quantity add foreign key (productCode) REFERENCES product(id);
-
--- INSERT INTO product (name, price )
--- VALUES ('Cardinal1', 15000),
--- ('Cardinal2', 55000),
--- ('Cardinal3', 5000),
--- ('Cardinal4', 345000),
--- ('Cardinal5', 55000);
+ alter table "orders" add foreign key ("userId") REFERENCES "users"(id) on delete cascade on update cascade;
+ alter table product_quantity add foreign key (orderId) REFERENCES "orders"(id) on delete cascade on update cascade;
+ alter table product_quantity add foreign key (productCode) REFERENCES product(id) on delete cascade on update cascade;
 
 
-INSERT INTO "user" ("firstName", "lastName" , email , password )
-VALUES ('nam', 'le' , 'namle@gmail.com' ,'nam205806'),
-('tran', 'anh' , 'trananh@gmail.com' ,'nam205806'),
-('anh', 'dung' , 'anhdung@gmail.com','nam205806'),
-('anh', 'vu' , 'anhvu@gmail.com' ,'nam205806');
